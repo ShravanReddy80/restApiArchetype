@@ -1,0 +1,1 @@
+Check out https://github.com/spring-projects/spring-data-examples for examples on using spring-data

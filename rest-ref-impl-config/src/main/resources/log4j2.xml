@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	monitorInterval="30" status="info">
+
+	<Properties>
+		<Property name="logPattern">
+			<!-- 
+				%d{yyyy-MM-dd HH:mm:ss.SSS}: date format 
+				%p : Used to output the priority of the logging event. 
+				${hostName} : hostname of the server from 
+				where the logging event originated 
+				%t : Used to output the name of the thread 
+				c{1.} : org.apache.commons.Foo is displayed as o.a.c.Foo 
+				%m: Used to output the application supplied message associated with the logging event. 
+				%n: platform dependent line separator 
+				%ex : The Throwable trace bound to the LoggingEvent 
+			-->
+			%d{yyyy-MM-dd HH:mm:ss.SSS} [%5p] [${hostName}] [%t] [%c{1.}] : %m%n%ex
+		</Property>
+		<Property name="appName">rest-ref-impl</Property>
+		<property name="currentFileName">
+			logs/$${appName}.log
+		</property>
+		<property name="archivedFileNamePattern">
+			logs/$${date:yyyy-MM}/$${appName}-%d{MM-dd-yyyy}-%i.log.gz
+		</property>
+		<property name="rolloverCronPattern">
+		<!-- 
+			The cron trigger causes a rollover every hour
+		 -->
+			0 0 * * * ?
+		</property>
+		<property name="rolloverFileSizeInMb">
+			250 MB
+		</property>
+		<Property name="baseDir">logs</Property>
+		<Property name="ageOfFilesToBeDeleted">60d</Property>
+		<Property name="maxArchivesInOneDay">100</Property>
+		<Property name="mostRecentLogsSavedInGb">100 GB</Property>
+		<Property name="mostRecentLogsSavedInNoOfFiles">10</Property>
+	</Properties>
+	<appenders>
+		<!-- Console Appender -->
+		<Console name="ConsoleLogger" target="SYSTEM_OUT">
+			<PatternLayout pattern="${logPattern}" />
+		</Console>
+
+		<RollingRandomAccessFile name="RollingRAFLogger" fileName="${currentFileName}"
+			filePattern="${archivedFileNamePattern}">
+			<PatternLayout>
+				<Pattern>${logPattern}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<CronTriggeringPolicy schedule="${rolloverCronPattern}"/>
+				<SizeBasedTriggeringPolicy size="${rolloverFileSizeInMb}" />
+			</Policies>
+			<DefaultRolloverStrategy max="${maxArchivesInOneDay}">
+        <!--
+        Nested conditions: the inner condition is only evaluated on files
+        for which the outer conditions are true.
+        -->
+        <Delete basePath="${baseDir}" maxDepth="2">
+          <IfFileName glob="*/${appName}-*.log.gz">
+            <IfLastModified age="${ageOfFilesToBeDeleted}">
+              <IfAny>
+                <IfAccumulatedFileSize exceeds="${mostRecentLogsSavedInGb}" />
+                <IfAccumulatedFileCount exceeds="${mostRecentLogsSavedInNoOfFiles}" />
+              </IfAny>
+            </IfLastModified>
+          </IfFileName>
+        </Delete>
+      </DefaultRolloverStrategy>
+		</RollingRandomAccessFile>
+	</appenders>
+
+	<Loggers>
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="ConsoleLogger" />
+			<AppenderRef ref="RollingRAFLogger" />
+		</Logger>
+		<Logger name="com.ref.api" level="debug" additivity="false">
+			<AppenderRef ref="ConsoleLogger" />
+			<AppenderRef ref="RollingRAFLogger" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="ConsoleLogger" />
+			<AppenderRef ref="RollingRAFLogger" />
+		</Root>
+	</Loggers>
+
+</log4j:configuration>

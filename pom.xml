@@ -1,0 +1,286 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ref.api</groupId>
+	<artifactId>rest-ref-impl-parent</artifactId>
+	<version>1.3.0</version>
+	<packaging>pom</packaging>
+
+	<name>ref REST-API Archetype Reference Implementation</name>
+	<description>This is a reference implementation of the REST-API archetype</description>
+
+
+	<modules>
+		<module>rest-ref-impl-web</module>
+		<module>rest-ref-impl-model</module>
+		<module>rest-ref-impl-config</module>
+		<module>rest-ref-impl-util</module>
+		<module>rest-ref-impl-business</module>
+		<module>rest-ref-impl-validators</module>
+	</modules>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>5.0.0.RELEASE</spring.version>
+		<spring.boot.version>1.5.7.RELEASE</spring.boot.version>
+		<spring.data.version>2.0.0.RELEASE</spring.data.version>
+		<validation.api.version>1.1.0.Final</validation.api.version>
+		<jackson.version>2.9.0</jackson.version>
+		<http-components.version>4.5.3</http-components.version>
+		<disruptor.version>3.3.6</disruptor.version>
+		<springfox.version>2.6.1</springfox.version>
+		<woodstox.version>4.4.1</woodstox.version>
+		<commons-lang3.version>3.6</commons-lang3.version>
+		<h2.version>1.4.196</h2.version>
+
+		<release.scm.connection></release.scm.connection>
+		<release.scm.developerConnection></release.scm.developerConnection>
+		<release.scm.url>https://github.com/ShravanReddy80/restApiArchetype</release.scm.url>
+
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Inherit defaults from Spring Boot -->
+			<dependency>
+				<!-- Import dependency management from Spring Boot -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${spring.boot.version}</version>
+				<!-- <scope>test</scope> -->
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-log4j2</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<!-- <dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-rest</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency> -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<scope>runtime</scope>
+				<version>${http-components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation.api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-xml</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.woodstox</groupId>
+				<artifactId>woodstox-core-asl</artifactId>
+				<version>${woodstox.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${disruptor.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+			</dependencies>   
+	</dependencyManagement>
+
+	<build>
+	<pluginManagement>
+			<plugins>
+			        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>3.0.1</version>
+        </plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+							<configuration>
+								<classifier>exec</classifier>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.6.2</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>	
+				</plugins>		
+		</pluginManagement>		
+		</build>
+
+
+	<inceptionYear></inceptionYear>
+	<organization>
+		<name></name>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>sreddy</id>
+			<email></email>
+			<organization>ref CI</organization>
+			<organizationUrl></organizationUrl>
+			<roles>
+				<role>Architect</role>
+				<role>Lead</role>
+				<role>Committer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<contributors>
+		<contributor>
+			<name />
+			<email />
+			<url />
+			<organization />
+			<organizationUrl />
+			<roles />
+			<timezone />
+			<properties>
+				<key>value</key>
+			</properties>
+		</contributor>
+	</contributors>
+
+
+	<scm>
+		<connection>${release.scm.connection}</connection>
+		<developerConnection>${release.scm.developerConnection}</developerConnection>
+		<url>${release.scm.url}</url>
+	</scm>
+
+
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name></name>
+			<url></url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name></name>
+			<url></url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<licenses>
+		<license>
+			<name />
+			<url />
+			<distribution />
+			<comments />
+		</license>
+	</licenses>
+
+</project>
